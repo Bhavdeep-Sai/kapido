@@ -211,11 +211,13 @@ Document shape:
 
 1. Create a new Web Service from GitHub repo.
 2. Root directory: `backend`
-3. Build command:
+3. Pin Python version (to avoid Python 3.14 wheel/source-build issues):
+  - Ensure `backend/runtime.txt` exists with `python-3.12.9`
+4. Build command:
    - `pip install -r requirements.txt`
-4. Start command:
+5. Start command:
    - `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-5. Add env vars from `backend/.env.example`.
+6. Add env vars from `backend/.env.example`.
 
 ### Alternative: Railway
 
