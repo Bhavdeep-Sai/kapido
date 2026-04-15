@@ -21,7 +21,7 @@ if (!apiBaseUrl) {
 
 const api = axios.create({
   baseURL: apiBaseUrl,
-  timeout: 10000,
+  timeout: 15000,
 });
 
 export async function getPrediction(input: PredictRequest): Promise<PredictionResult> {
@@ -83,7 +83,7 @@ export async function getGapDistribution(limit = 10000): Promise<GapDistribution
 export async function getModelValidation(maxRows = 1500): Promise<ModelValidationResponse> {
   const { data } = await api.get<ModelValidationResponse>("/analytics/model-validation", {
     params: { max_rows: maxRows },
-    timeout: 30000,
+    timeout: 45000,
   });
   return data;
 }
