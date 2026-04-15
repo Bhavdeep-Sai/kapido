@@ -13,8 +13,14 @@ import type {
   TimeSeriesResponse,
 } from "./types";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+if (!apiBaseUrl) {
+  throw new Error("Missing NEXT_PUBLIC_API_BASE_URL. Set it in frontend/.env.local (or deployment env vars).");
+}
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000",
+  baseURL: apiBaseUrl,
   timeout: 10000,
 });
 
