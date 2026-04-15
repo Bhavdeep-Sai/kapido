@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import joblib
+from fastapi import HTTPException
 
 from app.services.insights_service import InsightService
 from app.services.preprocess import build_features
@@ -80,4 +81,13 @@ class PredictorService:
 
 @lru_cache(maxsize=1)
 def get_predictor_service() -> PredictorService:
-    return PredictorService()
+    try:
+        return PredictorService()
+    except FileNotFoundError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Model artifact is not available. Set MODEL_PATH to a valid model.pkl path "
+                "or attach persistent disk storage with the trained model."
+            ),
+        ) from exc
