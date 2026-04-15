@@ -122,6 +122,7 @@ def load_dataset(path: Path) -> pd.DataFrame:
 
 
 def train() -> None:
+    print("Training local model profile (high accuracy, larger artifact size)...")
     dataset = load_dataset(DATA_PATH)
 
     X = dataset[FEATURES]
@@ -166,7 +167,8 @@ def train() -> None:
 
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(artifact, MODEL_PATH)
-    print(f"Saved model artifact to: {MODEL_PATH}")
+    model_size_mb = MODEL_PATH.stat().st_size / (1024 * 1024)
+    print(f"Saved model artifact to: {MODEL_PATH} ({model_size_mb:.2f}MB)")
 
 
 if __name__ == "__main__":

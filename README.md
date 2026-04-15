@@ -33,8 +33,10 @@ kapido/
 │   └── .env.local.example
 ├── models/
 │   ├── train_model.py
+│   ├── train_model_prod.py
 │   ├── predict.py
-│   └── model.pkl (generated)
+│   ├── model.pkl (local, generated)
+│   └── model_prod.pkl (production, generated)
 ├── data/
 │   └── ride_data.csv
 ├── notebooks/
@@ -43,20 +45,24 @@ kapido/
 
 ## 1. ML Training
 
-Train the model artifact (`models/model.pkl`) before running the backend.
+Train model artifacts before running the backend.
 
 ```bash
 cd models
 python train_model.py
+python train_model_prod.py
 ```
 
 Training pipeline includes:
 - Missing value handling (median/most-frequent imputation)
 - Feature engineering columns: `hour`, `day_of_week`, `location`, `latitude`, `longitude`
-- Baseline model: Linear Regression
-- Advanced model: Random Forest Regressor
+- `train_model.py` (local profile): larger Random Forest for best accuracy
+- `train_model_prod.py` (production profile): compact model candidates + size-aware selection
 - Evaluation metrics: RMSE and MAE
-- Export: joblib artifact at `models/model.pkl`
+- Export:
+  - Local: `models/model.pkl`
+  - Production: `models/model_prod.pkl` (joblib `compress=3`)
+- `train_model_prod.py` prints a local vs production accuracy/size trade-off table
 
 ## 2. Backend Setup (FastAPI)
 
@@ -89,9 +95,11 @@ Configure `.env`:
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority
 MONGODB_DB=kapido
 MONGODB_COLLECTION=predictions
-MODEL_PATH=../models/model.pkl
+MODEL_PATH=../models/model_prod.pkl
 ALLOWED_ORIGINS=http://localhost:3000
 ```
+
+If you want maximum local accuracy for experiments, switch `MODEL_PATH` to `../models/model.pkl`.
 
 Run backend:
 
@@ -228,8 +236,9 @@ Document shape:
 ## 6. Reproducibility Notes
 
 - Use pinned versions in `backend/requirements.txt`.
-- Keep `data/ride_data.csv` and retrain by running `python models/train_model.py`.
-- Commit generated `models/model.pkl` if deterministic deployment is preferred.
+- Keep `data/ride_data.csv` and retrain by running `python models/train_model.py` and `python models/train_model_prod.py`.
+- For deployment on free tiers, use `models/model_prod.pkl` with `MODEL_PATH=../models/model_prod.pkl`.
+- Keep `models/model.pkl` for local testing where size is not constrained.
 - For production-grade model iteration, version model artifacts (e.g., timestamped `.pkl` files).
 
 ## 7. Development Workflow
