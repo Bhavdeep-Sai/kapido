@@ -21,6 +21,7 @@ backend/.pytest_cache/
 models/model.pkl
 *.pkl
 *.joblib
+!models/model_prod.pkl
 
 # Optional (if dataset is large)
 data/*.csv
