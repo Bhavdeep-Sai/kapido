@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  --kapido-bg: #f4f9ff;
+  --kapido-text: #0f172a;
+  --kapido-surface: #ffffff;
+  --kapido-surface-soft: #f8fafc;
+}
+
+@theme inline {
+  --color-kapido-bg: var(--kapido-bg);
+  --color-kapido-text: var(--kapido-text);
+  --color-kapido-surface: var(--kapido-surface);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-space-grotesk);
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body {
+  color: var(--kapido-text);
+  font-family: var(--font-manrope), sans-serif;
+  background: linear-gradient(180deg, #e6f0ff 0%, #f4f9ff 50%, #eafaf4 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+.flow-card {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: flowCardIn 520ms ease-out forwards;
+}
+
+.flow-line {
+  fill: none;
+  stroke: #0f766e;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 12 10;
+  animation: moveDash 1.3s linear infinite;
+  opacity: 0.82;
+}
+
+.flow-dot {
+  fill: #10b981;
+  animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+.flow-label {
+  fill: #0f766e;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.flow-line-delay-1 {
+  animation-delay: 160ms;
+}
+
+.flow-line-delay-2 {
+  animation-delay: 300ms;
+}
+
+.flow-line-delay-3 {
+  animation-delay: 460ms;
+}
+
+.diagram-node {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  animation: revealNode 500ms ease-out forwards;
+}
+
+.reveal-1 {
+  animation-delay: 80ms;
+}
+
+.reveal-2 {
+  animation-delay: 180ms;
+}
+
+.reveal-3 {
+  animation-delay: 280ms;
+}
+
+.reveal-4 {
+  animation-delay: 380ms;
+}
+
+.reveal-5 {
+  animation-delay: 480ms;
+}
+
+@keyframes moveDash {
+  to {
+    stroke-dashoffset: -44;
+  }
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 0.65;
+    r: 5;
+  }
+  50% {
+    opacity: 1;
+    r: 7;
+  }
+}
+
+@keyframes flowCardIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes revealNode {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
